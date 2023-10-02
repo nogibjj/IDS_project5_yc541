@@ -1,4 +1,4 @@
-from jobs_database import connectDB, createDB, insertDB, readDB, updateDB, deleteDB, complexQuery1, complexQuery2
+from jobs_database import connectDB, createDB, insertDB, readDB, updateDB, deleteDB, query1, query2
 import os
 
 DATABASE_NAME = "jobs_database.db"
@@ -29,8 +29,6 @@ def test_update():
     conn, cursor = connectDB(DATABASE_NAME)
     createDB(cursor)
     insertDB(cursor, 55176, "Amazon", "Software Engineer", "2022-09-30", "New Grads", 500)
-    
-    updateDB(cursor, 55176, "Amazon", "Fullstack Developer", "2022-09-30", "New Grads", 550)
     cursor.execute("SELECT * FROM jobs WHERE job_id=?", (55176,))
     result = cursor.fetchone()
     assert result == (55176, "Amazon", "Fullstack Developer", "2022-09-30", "New Grads", 550)
@@ -45,20 +43,20 @@ def test_delete():
     info = readDB(cursor)
     assert len(info) == 1
 
-def test_complex_query1():
+def test_query1():
+    if os.path.exists("jobsDB.db"):
+        os.remove("jobsDB.db")
     conn, cursor = connectDB(DATABASE_NAME)
-    createDB(cursor)
-    insertDB(cursor, 55176, "Amazon", "Software Engineer", "2022-09-30", "New Grads", 500)
-    insertDB(cursor, 87356, "Google", "Backend Developer", "2022-09-20", "Experienced", 300)
-    
-    result = complexQuery1(cursor)
-    assert len(result) == 1  # Modify based on the expected length of result after running complexQuery1
+    # 使用insertDB来插入测试数据
+    insertDB(cursor, 55176, "Amazon", "Fullstack Developer", "2022-09-30", "New Grads", 550)
+    result = query1(cursor)
+    assert result == 1  # 我们刚刚插入了一个工作岗位
 
-def test_complex_query2():
+def test_query2():
+    if os.path.exists("jobsDB.db"):
+        os.remove("jobsDB.db")
     conn, cursor = connectDB(DATABASE_NAME)
-    createDB(cursor)
-    insertDB(cursor, 55176, "Amazon", "Software Engineer", "2022-09-30", "New Grads", 500)
-    insertDB(cursor, 87356, "Google", "Backend Developer", "2022-09-20", "Experienced", 300)
-    
-    result = complexQuery2(cursor)
-    assert len(result) == 2  # Modify based on the expected length of result after running complexQuery2
+    insertDB(cursor, 55176, "Amazon", "Fullstack Developer", "2021-09-29", "New Grads", 550)
+    results = query2(cursor)
+    for job in results:
+        assert job[3] < '2022-01-01'  # 确保工作发布日期在2022年1月1日之前

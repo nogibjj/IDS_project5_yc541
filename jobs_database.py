@@ -33,16 +33,14 @@ def deleteDB(cursor, job_id):
     cursor.execute("DELETE FROM jobs WHERE job_id = ?", (job_id,))
 
 def query1(cursor):
-    cursor.execute("SELECT company_name, SUM(position_count) FROM jobs GROUP BY company_name ORDER BY SUM(position_count) DESC")
-    print("Companies with the highest total position count:")
-    for row in cursor.fetchall():
-        print(f"{row[0]} with {row[1]} positions")
+    cursor.execute("SELECT COUNT(*) FROM jobs")
+    count = cursor.fetchone()[0]
+    return count
 
 def query2(cursor):
-    cursor.execute("SELECT job_name, posted_date FROM jobs WHERE job_type = 'intern' AND position_count > 200 ORDER BY posted_date DESC")
-    print("Latest intern jobs posted with more than 200 positions:")
-    for row in cursor.fetchall():
-        print(f"{row[0]} posted on {row[1]}")
+    cursor.execute("SELECT * FROM jobs WHERE posted_date < '2022-01-01'")
+    older_jobs = cursor.fetchall()
+    return older_jobs
 
 def main():
     database_name = "jobsDB.db"
