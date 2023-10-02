@@ -7,10 +7,8 @@ def connectDB(database_name):
     cursor = conn.cursor()
     return conn, cursor
 
-
 def createDB(cursor):
-    cursor.execute(
-        """
+    cursor.execute( """
     CREATE TABLE IF NOT EXISTS jobs (
         job_id INTEGER PRIMARY KEY,
         company_name TEXT,
@@ -18,9 +16,7 @@ def createDB(cursor):
         posted_date DATE,
         job_type TEXT,
         position_count INTEGER
-    )
-    """
-    )
+    )""" )
 
 
 def insertDB(
@@ -32,8 +28,6 @@ def insertDB(
     "VALUES (?, ?, ?, ?, ?, ?)",
     (job_id, company_name, job_name, posted_date, job_type, position_count),
 )
-
-
 
 def readDB(cursor):
     cursor.execute("SELECT * FROM jobs")
