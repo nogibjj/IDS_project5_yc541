@@ -13,7 +13,6 @@ import os
 DATABASE_NAME = "jobs_database.db"
 
 
-
 def test_create_and_insert():
     conn, cursor = connectDB(DATABASE_NAME)
     createDB(cursor)
@@ -51,11 +50,15 @@ def test_update():
     conn, cursor = connectDB(DATABASE_NAME)
     createDB(cursor)
     insertDB(
-        cursor, 55177, "Amazon", "Software Engineer", "2022-09-30", "New Grads", 500  # 注意这里，job_id 改为 55177
+        cursor,
+        55177,
+        "Amazon",
+        "Software Engineer",
+        "2022-09-30",
+        "New Grads",
+        500,  # 注意这里，job_id 改为 55177
     )
-    updateDB(
-        cursor, 55177, "2022-10-01"
-    )
+    updateDB(cursor, 55177, "2022-10-01")
     cursor.execute("SELECT * FROM jobs WHERE job_id=?", (55177,))
     result = cursor.fetchone()
     assert result == (
@@ -66,7 +69,6 @@ def test_update():
         "New Grads",
         500,
     )
-
 
 
 def test_delete():
