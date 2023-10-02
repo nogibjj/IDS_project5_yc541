@@ -27,9 +27,12 @@ def insertDB(
     cursor, job_id, company_name, job_name, posted_date, job_type, position_count
 ):
     cursor.execute(
-        "INSERT INTO jobs (job_id, company_name, job_name, posted_date, job_type, position_count) VALUES (?, ?, ?, ?, ?, ?)",
-        (job_id, company_name, job_name, posted_date, job_type, position_count),
-    )
+    "INSERT INTO jobs "
+    "(job_id, company_name, job_name, posted_date, job_type, position_count) "
+    "VALUES (?, ?, ?, ?, ?, ?)",
+    (job_id, company_name, job_name, posted_date, job_type, position_count),
+)
+
 
 
 def readDB(cursor):
